@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/x-icon" href="images/icon.png">
+  <title>Feliz Aniversário 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Bebas+Neue&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { overflow-x: hidden; }
+
+    #confetti-canvas {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999;
+    }
+
+    /* ══════════════════════════════════════
+       ① MELANIE MARTINEZ
+    ══════════════════════════════════════ */
+    .mm {
+      background: #F9C0D2;
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem 6rem;
+    }
+
+    /* checker pattern */
+    .mm::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-conic-gradient(rgba(255,255,255,0.12) 0% 25%, transparent 0% 50%);
+      background-size: 44px 44px;
+    }
+
+    .mm-blobs {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(255,183,210,0.7) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 75%, rgba(195,177,225,0.7) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, rgba(181,234,215,0.4) 0%, transparent 55%);
+    }
+
+    /* tears */
+    .mm-tears {
+      position: absolute; top: 0; left: 0; width: 100%;
+      display: flex; justify-content: space-around;
+      pointer-events: none; z-index: 1;
+    }
+    .mm-tear {
+      width: 7px;
+      border-radius: 0 0 50% 50%;
+      opacity: 0;
+      animation: tearfall ease-in infinite;
+    }
+    @keyframes tearfall {
+      0%   { height: 0;    opacity: 0;   transform: translateY(0); }
+      20%  { opacity: 0.7; }
+      100% { height: 90px; opacity: 0;   transform: translateY(20px); }
+    }
+
+    .mm-stars { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .mm-star {
+      position: absolute;
+      animation: starBob ease-in-out infinite;
+    }
+    @keyframes starBob {
+      0%,100% { transform: translateY(0) rotate(0deg); opacity: .65; }
+      50%      { transform: translateY(-14px) rotate(18deg); opacity: 1; }
+    }
+
+    .mm-content { position: relative; z-index: 2; text-align: center; width: 100%; max-width: 700px; }
+
+    .mm-badge {
+      display: inline-block;
+      font-family: 'Fredoka One', cursive;
+      font-size: .85rem;
+      letter-spacing: .22em;
+      color: rgba(90,30,60,.65);
+      background: rgba(255,255,255,.45);
+      backdrop-filter: blur(6px);
+      padding: .4rem 1.2rem;
+      border-radius: 50px;
+      margin-bottom: 1.4rem;
+    }
+
+    .mm-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      line-height: .95;
+      color: #fff;
+      text-shadow: 4px 5px 0 #d4607e, 8px 10px 24px rgba(212,96,126,.35);
+      margin-bottom: 1.6rem;
+    }
+
+    .mm-card {
+      background: rgba(255,255,255,.8);
+      backdrop-filter: blur(14px);
+      border-radius: 28px;
+      padding: 2.8rem 3rem;
+      text-align: left;
+      box-shadow:
+        0 8px 40px rgba(212,96,126,.18),
+        0 0 0 5px rgba(255,200,217,.5),
+        inset 0 0 0 1px rgba(255,255,255,.7);
+      position: relative;
+    }
+    .mm-card::before {
+      content: '🎀';
+      position: absolute; top: -22px; right: 22px;
+      font-size: 3rem;
+      animation: bowWag 2.4s ease-in-out infinite;
+    }
+    @keyframes bowWag {
+      0%,100% { transform: rotate(-12deg); }
+      50%      { transform: rotate(12deg); }
+    }
+
+    .mm-card p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.04rem; line-height: 1.9;
+      color: #5a2e42; font-weight: 600;
+      margin-bottom: .9rem;
+    }
+    .mm-card p:last-of-type { margin-bottom: 0; }
+    .mm-card p strong { color: #c45a8a; font-weight: 800; }
+
+    .mm-deco {
+      display: flex; justify-content: center; gap: .4rem;
+      font-size: 1.4rem; margin-top: 1.5rem;
+    }
+    .mm-deco span { animation: starBob 3s ease-in-out infinite; }
+    .mm-deco span:nth-child(2n)  { animation-delay: .6s; }
+    .mm-deco span:nth-child(3n)  { animation-delay: 1.2s; }
+
+    /* MM → Hannibal drip */
+    .drip-svg { display: block; background: #F9C0D2; line-height: 0; }
+
+    /* ══════════════════════════════════════
+       ② HANNIBAL
+    ══════════════════════════════════════ */
+    .hann {
+      background: #0b0808;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .hann-atmo {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse at 25% 35%, rgba(120,0,0,.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 65%, rgba(40,10,0,.6) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 95%, rgba(80,0,0,.3) 0%, transparent 40%);
+    }
+    .hann-grain {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        repeating-linear-gradient(87deg, rgba(255,255,255,.008) 0 1px, transparent 1px 10px),
+        repeating-linear-gradient(93deg, rgba(0,0,0,.03) 0 2px, transparent 2px 14px);
+    }
+
+    .hann-inner {
+      position: relative; z-index: 2;
+      padding: 6rem 2rem; max-width: 980px; margin: 0 auto;
+    }
+
+    .hann-head { text-align: center; margin-bottom: 4rem; }
+
+    .hann-orn { color: #7a0000; font-size: 1.1rem; letter-spacing: 1rem; display: block; margin-bottom: .8rem; }
+
+    .hann-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 600;
+      font-size: clamp(2.2rem, 6vw, 4.4rem);
+      color: #f0e6d6;
+      text-shadow: 0 0 50px rgba(120,0,0,.45);
+      margin-bottom: .6rem;
+    }
+
+    .hann-rule {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; margin: 1.2rem auto; max-width: 380px;
+    }
+    .hann-rule-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, #7a0000, transparent); }
+    .hann-rule-gem  { color: #7a0000; font-size: .85rem; }
+
+    .hann-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; color: #7a5535;
+      font-size: 1.05rem; letter-spacing: .18em;
+    }
+
+    /* photos */
+    .hann-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .hann-frame {
+      position: relative;
+      background: #160d08;
+      padding: 11px;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .hann-frame::before {
+      content: ''; position: absolute; inset: 3px;
+      border: 1px solid rgba(120,0,0,.45);
+      pointer-events: none; transition: border-color .3s;
+    }
+    .hann-frame::after {
+      content: ''; position: absolute; inset: 0;
+      border: 2px solid rgba(190,155,60,.25);
+      pointer-events: none; transition: border-color .3s;
+    }
+    .hann-frame:hover { transform: scale(1.04); box-shadow: 0 0 40px rgba(120,0,0,.35); }
+    .hann-frame:hover::after { border-color: rgba(190,155,60,.6); }
+
+    .hann-ph {
+      width: 100%; aspect-ratio: 1/1;
+      background: linear-gradient(135deg, #2a0505, #160d08);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .5rem;
+    }
+    .hann-ph .ph-i  { font-size: 1.8rem; opacity: .45; }
+    .hann-ph span   {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: .8rem;
+      color: rgba(240,230,214,.35); text-align: center;
+    }
+
+    .hann-img {
+      width: 100%; aspect-ratio: 1/1;
+      object-fit: cover; display: none; block-size: auto;
+    }
+
+    .hann-cap {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.5rem;
+      color: #7a5535; text-align: center;
+      margin-top: 7px; letter-spacing: .05em;
+    }
+
+    .hann-quote {
+      margin-top: 4rem;
+      padding: 2.5rem;
+      border-top: 1px solid rgba(120,0,0,.3);
+      border-bottom: 1px solid rgba(120,0,0,.3);
+      text-align: center;
+    }
+    .hann-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 400;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: #f0e6d6; line-height: 1.85;
+      max-width: 580px; margin: 0 auto;
+    }
+    .hann-quote cite {
+      display: block; margin-top: 1.1rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .85rem; color: #7a0000;
+      letter-spacing: .2em; font-style: normal;
+    }
+
+    /* Hannibal → TOP diagonal */
+    .hann-cut { background: #0b0808; line-height: 0; }
+
+    /* ══════════════════════════════════════
+       ③ TWENTY ONE PILOTS
+    ══════════════════════════════════════ */
+    .top {
+      background: #0f0f0f;
+      position: relative; overflow: hidden;
+    }
+    .top-grid {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(247,201,72,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247,201,72,.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .top-glow {
+      position: absolute; pointer-events: none;
+      top: 0; right: 0;
+      width: 50%; height: 100%;
+      background: linear-gradient(to left, rgba(247,201,72,.04), transparent);
+    }
+    .top-skull {
+      position: absolute; right: 2.5rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 10rem; opacity: .035;
+      color: #F7C948; pointer-events: none;
+      font-family: serif; user-select: none;
+    }
+
+    .top-inner {
+      position: relative; z-index: 2;
+      padding: 6rem 2rem; max-width: 860px; margin: 0 auto;
+    }
+
+    .top-eyebrow {
+      font-family: 'Bebas Neue', cursive;
+      font-size: .75rem; letter-spacing: .55em;
+      color: #F7C948; margin-bottom: .5rem;
+    }
+    .top-title {
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(3.5rem, 11vw, 8rem);
+      line-height: .88; color: #fff;
+    }
+    .top-title .y { color: #F7C948; }
+    .top-title .r { color: #CC2200; }
+
+    .top-bar { width: 55px; height: 4px; background: #F7C948; margin: 1.8rem 0 .6rem; }
+
+    .top-sub {
+      font-family: 'Nunito', sans-serif;
+      font-size: .88rem; letter-spacing: .12em;
+      color: rgba(255,255,255,.38); font-weight: 700;
+      text-transform: uppercase; margin-bottom: 3rem;
+    }
+
+    .top-list { display: flex; flex-direction: column; }
+
+    .top-item {
+      display: flex; align-items: flex-start;
+      gap: 0;
+      padding: 1.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      transition: background .2s;
+    }
+    .top-item:hover { background: rgba(247,201,72,.025); }
+
+    .top-num {
+      font-family: 'Bebas Neue', cursive;
+      font-size: 2.8rem; color: rgba(247,201,72,.18);
+      width: 64px; flex-shrink: 0; line-height: 1;
+    }
+    .top-body { flex: 1; padding-left: .8rem; }
+    .top-body strong {
+      display: block;
+      font-family: 'Bebas Neue', cursive;
+      font-size: clamp(1.3rem, 3vw, 1.85rem);
+      color: #fff; letter-spacing: .04em; line-height: 1;
+      margin-bottom: .4rem;
+    }
+    .top-body p {
+      font-family: 'Nunito', sans-serif;
+      font-size: .9rem; color: rgba(255,255,255,.5);
+      line-height: 1.65; font-weight: 600;
+    }
+    .top-icon { font-size: 1.3rem; flex-shrink: 0; align-self: center; padding-left: 1rem; opacity: .65; }
+
+    /* TOP → Finale wave */
+    .top-wave { background: #0f0f0f; line-height: 0; }
+
+    /* ══════════════════════════════════════
+       ④ FINALE — AMIZADE
+    ══════════════════════════════════════ */
+    .fin {
+      background: linear-gradient(155deg, #FFF0F5 0%, #FFF8EE 45%, #EFF5FF 100%);
+      position: relative; overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .fin-blob1 {
+      position: absolute; width: 520px; height: 520px;
+      background: radial-gradient(circle, rgba(255,170,200,.32) 0%, transparent 70%);
+      top: -140px; left: -120px; pointer-events: none;
+    }
+    .fin-blob2 {
+      position: absolute; width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(190,210,255,.28) 0%, transparent 70%);
+      bottom: -100px; right: -100px; pointer-events: none;
+    }
+    .fin-blob3 {
+      position: absolute; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(255,215,170,.22) 0%, transparent 70%);
+      top: 45%; left: 50%; transform: translate(-50%,-50%);
+      pointer-events: none;
+    }
+
+    .fin-petals { position: absolute; inset: 0; pointer-events: none; }
+    .fin-petal {
+      position: absolute;
+      animation: petalDrift ease-in-out infinite;
+    }
+    @keyframes petalDrift {
+      0%,100% { transform: translateY(0) rotate(0deg) translateX(0); opacity: .55; }
+      33%      { transform: translateY(-18px) rotate(14deg) translateX(8px); opacity: .8; }
+      66%      { transform: translateY(-8px) rotate(-10deg) translateX(-5px); opacity: .45; }
+    }
+
+    .fin-inner {
+      position: relative; z-index: 2;
+      padding: 6rem 2rem 5rem;
+      max-width: 720px; margin: 0 auto;
+      text-align: center;
+    }
+
+    .fin-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 600;
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      color: #8B4A6A; margin-bottom: .5rem;
+    }
+    .fin-sub {
+      font-size: .9rem; color: rgba(90,58,74,.5);
+      font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; margin-bottom: 3.5rem;
+    }
+
+    /* polaroid photo */
+    .fin-frame {
+      background: #fff;
+      padding: 16px 16px 68px;
+      box-shadow:
+        0 22px 60px rgba(139,74,106,.18),
+        0 4px 14px rgba(0,0,0,.07);
+      border-radius: 3px;
+      transform: rotate(-1.8deg);
+      transition: transform .4s ease, box-shadow .4s ease;
+      cursor: pointer;
+      display: inline-block;
+      max-width: 400px; width: 100%;
+    }
+    .fin-frame:hover {
+      transform: rotate(0deg) scale(1.03);
+      box-shadow: 0 30px 80px rgba(139,74,106,.22), 0 6px 20px rgba(0,0,0,.1);
+    }
+
+    .fin-ph {
+      width: 100%; aspect-ratio: 4/3;
+      background: linear-gradient(135deg, #FFD6E7, #C5D8F5, #FFE5C8);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: .6rem;
+    }
+    .fin-ph .ph-big { font-size: 3.2rem; }
+    .fin-ph span {
+      font-family: 'Nunito', sans-serif;
+      font-size: .82rem; color: rgba(90,58,74,.45);
+      font-weight: 700;
+    }
+    .fin-img {
+      width: 100%; aspect-ratio: 4/3;
+      object-fit: cover; display: none;
+    }
+
+    .fin-cap {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.05rem;
+      color: rgba(90,58,74,.38);
+      margin-top: 1.2rem;
+    }
+
+    .fin-msg {
+      font-size: 1.06rem; line-height: 1.9;
+      color: rgba(90,58,74,.78);
+      font-weight: 600; max-width: 540px;
+      margin: 3rem auto 0;
+    }
+    .fin-msg strong { color: #c45a8a; font-weight: 800; }
+
+    .fin-btn {
+      display: inline-block; margin-top: 2.5rem;
+      padding: 1rem 3rem;
+      background: linear-gradient(135deg, #ffb3c6, #c45a8a);
+      color: #fff; border: none; border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem; font-weight: 800;
+      cursor: pointer; letter-spacing: .05em;
+      box-shadow: 0 8px 28px rgba(196,90,138,.35);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .fin-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 14px 38px rgba(196,90,138,.45);
+    }
+
+    .fin-sign {
+      margin-top: 4rem; padding-top: 2rem;
+      border-top: 1px solid rgba(196,90,138,.18);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-size: 1.2rem;
+      color: rgba(90,58,74,.4);
+    }
+
+    /* ══════════════════════════════════════
+       SCROLL REVEAL
+    ══════════════════════════════════════ */
+    .rev {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .75s ease, transform .75s ease;
+    }
+    .rev.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: .1s; }
+    .d2 { transition-delay: .22s; }
+    .d3 { transition-delay: .34s; }
+    .d4 { transition-delay: .46s; }
+
+    @media(max-width:580px) {
+      .hann-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .top-num   { width: 40px; font-size: 2rem; }
+      .mm-card   { padding: 2rem 1.5rem; }
+      .fin-frame { padding: 12px 12px 54px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<!-- ═══════════════════════════════════════════════
+     ① MELANIE MARTINEZ
+═══════════════════════════════════════════════ -->
+<section class="mm">
+  <div class="mm-blobs"></div>
+  <div class="mm-stars" id="mmStars"></div>
+
+  <div class="mm-tears" id="mmTears"></div>
+
+  <div class="mm-content">
+    <div class="rev">
+      <div class="mm-badge">✦ — feliz aniversário — ✦</div>
+      <h1 class="mm-title">Cry<br/>Baby<br/>Day</h1>
+    </div>
+
+    <div class="mm-card rev d2">
+      <!--
+        ✏️ EDITE O TEXTO AQUI!
+        Coloca o nome, memórias, apelidos, tudo!
+      -->
+      <p><b>E finalmente dezoitou!!!</b></p>
+      <p>
+        Eu queria te agrader pela pessoa que você é, pelos momentos que nós passamos, pelas piadas que só você entende, e que as vezes,
+        eu nem preciso falar nada, a gente já se entende só de olhar um para o outro. Sinto que você me ensinou o que é realmente ter uma irmã, 
+        e me fez me sentir muito especial e acolhido, até mesmo pela sua família(O pessoal me convida até pro aniversário de familiar que nem conheço, me diz se isso não é coisa de família), 
+        por isso eu só te agradacer, por ter me mostrado que eu valho e que eu sou mais que apenas outro amigo na sua lista.
+      </p>
+      <p>
+        E eu sei que ultimamente você tem passado por momentos muito difíceis 
+        e de grande mudança na sua vida, perdemos muitos amigos, mudamos quem éramos e quem nós vamos ser, todo dia encontrando um novo <b>EU</b> em nós mesmos, 
+        mas saiba que eu vou <b>SEMPRE</b> estar aqui por você quando você não souber mais quem você era e esquecer da força e capacidade que você tem.
+        E o pior, é que não faz nem 1 ano que nos conhecemos, mas você conseguiu ser muito mais especial que muitos, e se tudo der certo, vamos viver
+        muitos outros momentos como esse, te desejo toda felicdade no mundo.
+      </p>
+      <p>
+        Aproveita essa nova fase da sua vida! Te amo, <b>bebezuda</b>.
+      </p>
+      <div class="mm-deco">
+        <span>🌸</span><span>✦</span><span>🎀</span><span>✦</span>
+        <span>🌙</span><span>✦</span><span>🎀</span><span>✦</span><span>🌸</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- drip transition: pink → dark -->
+<svg class="drip-svg" viewBox="0 0 1200 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:80px">
+  <path d="
+    M0,0 L1200,0 L1200,8
+    Q1160,8 1150,34 Q1140,66 1128,66 Q1116,66 1104,34 Q1092,8 1050,8
+    Q1010,8 1000,38 Q990,70 978,70 Q966,70 954,38 Q942,8 900,8
+    Q855,8 844,42 Q833,74 820,74 Q807,74 794,42 Q781,8 740,8
+    Q695,8 684,36 Q673,66 660,66 Q647,66 634,36 Q621,8 580,8
+    Q535,8 524,40 Q513,72 500,72 Q487,72 474,40 Q461,8 420,8
+    Q375,8 364,34 Q353,62 340,62 Q327,62 314,34 Q301,8 260,8
+    Q215,8 204,38 Q193,68 180,68 Q167,68 154,38 Q141,8 100,8
+    Q60,8 50,30 Q40,54 20,54 Q10,54 0,40
+    Z
+  " fill="#0b0808"/>
+</svg>
+
+<!-- ═══════════════════════════════════════════════
+     ② HANNIBAL
+═══════════════════════════════════════════════ -->
+<section class="hann">
+  <div class="hann-atmo"></div>
+  <div class="hann-grain"></div>
+
+  <div class="hann-inner">
+
+    <div class="hann-head rev">
+      <span class="hann-orn">✦ &nbsp; ✦ &nbsp; ✦</span>
+      <h2 class="hann-title">Nossos Momentos</h2>
+      <div class="hann-rule">
+        <div class="hann-rule-line"></div>
+        <span class="hann-rule-gem">❧</span>
+        <div class="hann-rule-line"></div>
+      </div>
+      <p class="hann-sub">Triz Lecter e Tiago Graham</p>
+    </div>
+
+    <div class="hann-grid">
+
+      <!-- Foto 1 -->
+      <div class="hann-frame rev d1">
+        <img class="hann-img"
+            src="images/foto1.png"
+            alt=""
+            style="display:block"/>
+        <!-- ✏️ Legenda: -->
+        <div class="hann-cap">14/02/26</div>
+      </div>
+
+      <!-- Foto 2 -->
+      <div class="hann-frame rev d2" onclick="document.getElementById('hf2').click()">
+        <img class="hann-img"
+            src="images/foto2.jpg"
+            alt=""
+            style="display:block"/>
+        <!-- ✏️ Legenda: -->
+        <div class="hann-cap">12/02/26</div>
+      </div>
+
+      <!-- Foto 3 -->
+      <div class="hann-frame rev d3" onclick="document.getElementById('hf3').click()">
+        <img class="hann-img"
+            src="images/foto4.jpg"
+            alt=""
+            style="display:block"/>
+        <!-- ✏️ Legenda: -->
+        <div class="hann-cap">14/02/26</div>
+      </div>
+
+      <!-- Foto 4 -->
+      <div class="hann-frame rev d4" onclick="document.getElementById('hf4').click()">
+        <img class="hann-img"
+            src="images/foto5.jpg"
+            alt=""
+            style="display:block"/>
+        <!-- ✏️ Legenda: -->
+        <div class="hann-cap">31/12/25</div>
+      </div>
+
+    </div>
+
+    <div class="hann-quote rev">
+      <blockquote>
+        "Quando você olhar em seu corpo, coração e mente e ver cicatrizes, com certeza o passado foi muito real."
+      </blockquote>
+      <cite>— Hannibal Lecter</cite>
+    </div>
+
+  </div>
+</section>
+
+<!-- sharp diagonal: dark → black -->
+<div class="hann-cut">
+  <svg viewBox="0 0 1200 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:55px;display:block">
+    <polygon points="0,0 1200,55 1200,55 0,55" fill="#0f0f0f"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ③ TWENTY ONE PILOTS
+═══════════════════════════════════════════════ -->
+<section class="top">
+  <div class="top-grid"></div>
+  <div class="top-glow"></div>
+  <div class="top-skull">|-/</div>
+
+  <div class="top-inner">
+
+    <div class="rev">
+      <div class="top-eyebrow">★ stay with me, my blood ★</div>
+      <div class="top-title">
+        por que<br/>eu <span class="y">te</span> <span class="r">amo</span>
+      </div>
+      <div class="top-bar"></div>
+      <p class="top-sub">reasons that stay alive — stay alive for her</p>
+    </div>
+
+    <div class="top-list">
+
+      <!-- ✏️ Edite os motivos! Adicione ou remova. -->
+
+      <div class="top-item rev">
+        <div class="top-num">01</div>
+        <div class="top-body">
+          <strong>eu sempre me divirto horrores</strong>
+          <p>Não tem dia que saímos que eu não morra de rir, e mesmo que ficamos quietos, sua presença relaxa minha alma.</p>
+        </div>
+        <div class="top-icon">😂</div>
+      </div>
+
+      <div class="top-item rev d1">
+        <div class="top-num">02</div>
+        <div class="top-body">
+          <strong>você se importa</strong>
+          <p>Nos momentos que eu preciso, sei que você vai estar lá por mim, e isso me coforta, saber que eu posso confiar em você.</p>
+        </div>
+        <div class="top-icon">🤝</div>
+      </div>
+
+      <div class="top-item rev d2">
+        <div class="top-num">03</div>
+        <div class="top-body">
+          <strong>nós nos entendemos</strong>
+          <p>Compartilhamos de gostos iguais, e sempre conversamos a vontade, e mesmo que algum não conheça algo, estamos sempre dispostos a ouvir e conhecer.</p>
+        </div>
+        <div class="top-icon">🧠</div>
+      </div>
+
+      <div class="top-item rev d3">
+        <div class="top-num">04</div>
+        <div class="top-body">
+          <strong>você é muito forte</strong>
+          <p>Sei que as vezes você nao percebe, mas você tem uma força absurda, e não falo física, você passa por muita coisa complicada, e pra se manter assim, tem que ser muit forte. - Isso eu te admiro muito -</p>
+        </div>
+        <div class="top-icon">🌟</div>
+      </div>
+
+      <div class="top-item rev d4">
+        <div class="top-num">05</div>
+        <div class="top-body">
+          <!-- ✏️ Motivo super pessoal de vocês dois: -->
+          <strong>em todos universos, é a gente</strong>
+          <p>Se eu for Clancy, você vai ser Torchbearer, se eu for Will, vc vai ser Hannibal, se eu for Chewbacca você vai ser o Han.</p>
+        </div>
+        <div class="top-icon">💛</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- smooth wave: black → soft pink -->
+<div class="top-wave">
+  <svg viewBox="0 0 1200 80" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;height:80px;display:block">
+    <path d="M0,80 C280,10 920,10 1200,80 L1200,80 L0,80 Z" fill="#FFF0F5"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ④ FINALE — AMIZADE
+═══════════════════════════════════════════════ -->
+<section class="fin">
+  <div class="fin-blob1"></div>
+  <div class="fin-blob2"></div>
+  <div class="fin-blob3"></div>
+  <div class="fin-petals" id="finPetals"></div>
+
+  <div class="fin-inner">
+
+    <h2 class="fin-title rev">e por último...</h2>
+    <p class="fin-sub rev"></p>
+
+    <div class="fin-frame rev" onclick="document.getElementById('ff1').click()">
+      <img class="hann-img"
+            src="images/foto6.jpeg"
+            alt=""
+            style="display:block"/>
+        <!-- ✏️ Legenda: -->
+        <div class="hann-cap">toda vez que fizer aniversário, lembre-se que de quem você era, é, e quer ser...</div>
+    </div>
+
+    <!-- ✏️ Legenda da foto final: -->
+
+    <p class="fin-msg rev">
+      <!-- ✏️ Mensagem final: -->
+      Feliz parabéns, mana.💕
+    </p>
+
+    <button class="fin-btn rev" onclick="triggerConfetti()">🎉 celebrar! 🎉</button>
+
+    <!-- ✏️ Assina aqui: -->
+    <div class="fin-sign rev">— todos direitos reservados a capimaso ©</div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SCRIPTS
+═══════════════════════════════════════════════ -->
+<script>
+/* ── MM: stars ── */
+const mmStarsEl = document.getElementById('mmStars');
+const starGlyphs = ['🎀','💧','✨','🍼','🎈','🍰'];
+const starColors  = ['#FFB7C5','#C3B1E1','#B5EAD7','#fff','#FFDAC1','#FF9AA2'];
+for (let i = 0; i < 22; i++) {
+  const s  = document.createElement('span');
+  s.className = 'mm-star';
+  s.textContent = starGlyphs[i % starGlyphs.length];
+  s.style.cssText = `
+    left:${Math.random()*100}%;top:${Math.random()*100}%;
+    font-size:${0.7+Math.random()*1.3}rem;
+    color:${starColors[Math.floor(Math.random()*starColors.length)]};
+    animation-delay:${(Math.random()*4).toFixed(2)}s;
+    animation-duration:${(3+Math.random()*3).toFixed(2)}s;
+  `;
+  mmStarsEl.appendChild(s);
+}
+
+/* ── MM: tears ── */
+const tearColors = ['#a8d8ea','#c3b1e1','#b5ead7','#f7c8d5'];
+const tearsEl = document.getElementById('mmTears');
+for (let i = 0; i < 6; i++) {
+  const t = document.createElement('div');
+  t.className = 'mm-tear';
+  const c = tearColors[i % tearColors.length];
+  t.style.cssText = `
+    background: linear-gradient(to bottom, ${c}, rgba(255,255,255,0));
+    animation-duration:${(3+Math.random()*2.5).toFixed(2)}s;
+    animation-delay:${(Math.random()*4).toFixed(2)}s;
+  `;
+  tearsEl.appendChild(t);
+}
+
+/* ── Finale: petals ── */
+const petalEmojis = ['🌸','🌺','🌷','💮','🌼','🌻'];
+const petalsCon   = document.getElementById('finPetals');
+for (let i = 0; i < 14; i++) {
+  const p = document.createElement('span');
+  p.className = 'fin-petal';
+  p.textContent = petalEmojis[i % petalEmojis.length];
+  p.style.cssText = `
+    left:${Math.random()*100}%;top:${10+Math.random()*80}%;
+    font-size:${0.8+Math.random()*0.9}rem;
+    animation-delay:${(Math.random()*5).toFixed(2)}s;
+    animation-duration:${(4+Math.random()*4).toFixed(2)}s;
+  `;
+  petalsCon.appendChild(p);
+}
+
+/* ── Photo swap ── */
+function swapPhoto(input, imgId, phId) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById(imgId);
+    const ph  = document.getElementById(phId);
+    img.src = e.target.result;
+    img.style.display = 'block';
+    ph.style.display  = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── Scroll reveal ── */
+const revEls = document.querySelectorAll('.rev');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1 });
+revEls.forEach(el => io.observe(el));
+
+/* ── Confetti ── */
+const cvs = document.getElementById('confetti-canvas');
+const ctx = cvs.getContext('2d');
+let W, H, parts = [], aid = null;
+const confColors = ['#FFB7C5','#C3B1E1','#B5EAD7','#F7C948','#FF9AA2','#FFDAC1','#8B0000','#fff','#F7C948'];
+
+function resize() { W = cvs.width = innerWidth; H = cvs.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+function mkP() {
+  return {
+    x: Math.random()*W, y: -20,
+    r: 4+Math.random()*7,
+    color: confColors[Math.floor(Math.random()*confColors.length)],
+    vx: (Math.random()-.5)*3.5, vy: 1.8+Math.random()*3,
+    angle: Math.random()*Math.PI*2,
+    spin: (Math.random()-.5)*.14,
+    shape: Math.random() > .5 ? 'rect':'circle'
+  };
+}
+function drawP(p) {
+  ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+  ctx.fillStyle = p.color;
+  if (p.shape==='rect') ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
+  else { ctx.beginPath(); ctx.arc(0,0,p.r/2,0,Math.PI*2); ctx.fill(); }
+  ctx.restore();
+}
+
+function triggerConfetti() {
+  if (aid) { cancelAnimationFrame(aid); ctx.clearRect(0,0,W,H); }
+  parts = Array.from({length:220}, mkP);
+  let f=0;
+  function loop() {
+    ctx.clearRect(0,0,W,H);
+    parts.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin;
+      if (p.y>H+20) { Object.assign(p, mkP()); p.y=-20; }
+      drawP(p);
+    });
+    f++;
+    if (f<380) aid = requestAnimationFrame(loop);
+    else { ctx.clearRect(0,0,W,H); aid=null; }
+  }
+  loop();
+}
+
+window.addEventListener('load', () => setTimeout(triggerConfetti, 700));
+</script>
+</body>
+</html>
